@@ -1,0 +1,60 @@
+services:
+  friturier-api:
+    build:
+      context: https://github.com/peyrlac/FriturierAPI.git
+      dockerfile: Dockerfile
+    container_name: friturier-api
+    restart: unless-stopped
+    environment:
+      NODE_ENV: ${NODE_ENV:-production}
+      PORT: ${API_PORT:-3001}
+      MONGODB_URI: ${MONGO_TOKEN_API}
+      DISCORD_TOKEN: ${DISCORD_TOKEN_API}
+      STATS_API_KEY: ${STATS_API_KEY}
+      JWT_SECRET: ${JWT_SECRET}
+      DASHBOARD_PASSWORD: ${DASHBOARD_PASSWORD}
+      AFK_CHANNEL_ID: ${AFK_CHANNEL_ID}
+      BASE_PATH: ${BASE_PATH:-}
+    ports:
+      - "${API_PORT:-3001}:${API_PORT:-3001}"
+    networks:
+      - friturier-net
+
+  friturier-bot:
+    build:
+      context: https://github.com/peyrlac/Le-Friturier.git
+      dockerfile: Dockerfile
+    container_name: friturier-bot
+    restart: unless-stopped
+    depends_on:
+      - friturier-api
+    environment:
+      NODE_ENV: ${NODE_ENV:-production}
+      DISCORD_TOKEN: ${DISCORD_TOKEN}
+      MONGO_TOKEN: ${MONGO_TOKEN}
+      STATS_API_BASE: ${STATS_API_BASE:-http://friturier-api:3001}
+      STATS_API_URL: ${STATS_API_URL:-http://friturier-api:3001}
+      STATS_API_KEY: ${STATS_API_KEY}
+
+      WEBHOOK_ID: ${WEBHOOK_ID}
+      WEBHOOK_TOKEN: ${WEBHOOK_TOKEN}
+      DISCORD_ID: ${DISCORD_ID}
+      DISCORD_STATUS: ${DISCORD_STATUS}
+      RADIO: ${RADIO}
+      TOPGG_TOKEN: ${TOPGG_TOKEN}
+      SPOTIFY_CLIENT_ID: ${SPOTIFY_CLIENT_ID}
+      SPOTIFY_CLIENT_SECRET: ${SPOTIFY_CLIENT_SECRET}
+      GIPHY_TOKEN: ${GIPHY_TOKEN}
+      LAVALINK_HOST: ${LAVALINK_HOST}
+      LAVALINK_PASSWORD: ${LAVALINK_PASSWORD}
+      LAVALINK_PORT: ${LAVALINK_PORT}
+      LAVALINK_SECURE: ${LAVALINK_SECURE:-false}
+      OPENAI: ${OPENAI}
+    ports:
+      - "${BOT_PORT:-3000}:3000"
+    networks:
+      - friturier-net
+
+networks:
+  friturier-net:
+    driver: bridge
