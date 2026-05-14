@@ -19,7 +19,7 @@ services:
       - friturier-net
 
   friturier-bot:
-    image: ghcr.io/peyrlac/le-friturier:latest
+    image: ghcr.io/peyrlac/friturier-bot:latest
     container_name: friturier-bot
     restart: unless-stopped
     depends_on:
