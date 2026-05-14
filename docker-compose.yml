@@ -1,8 +1,6 @@
 services:
   friturier-api:
-    build:
-      context: https://github.com/peyrlac/FriturierAPI.git
-      dockerfile: Dockerfile
+    image: ghcr.io/peyrlac/friturier-api:latest
     container_name: friturier-api
     restart: unless-stopped
     environment:
@@ -16,14 +14,12 @@ services:
       AFK_CHANNEL_ID: ${AFK_CHANNEL_ID}
       BASE_PATH: ${BASE_PATH:-}
     ports:
-      - "${API_PORT:-3001}:${API_PORT:-3001}"
+      - "${API_PORT:-3001}:3001"
     networks:
       - friturier-net
 
   friturier-bot:
-    build:
-      context: https://github.com/peyrlac/Le-Friturier.git
-      dockerfile: Dockerfile
+    image: ghcr.io/peyrlac/le-friturier:latest
     container_name: friturier-bot
     restart: unless-stopped
     depends_on:
