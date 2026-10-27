@@ -74,6 +74,9 @@ services:
     networks:
       - friturier-net
 
+volumes:
+  lavalink-plugins:
+
 networks:
   friturier-net:
     driver: bridge
