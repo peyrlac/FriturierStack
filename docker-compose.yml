@@ -19,12 +19,30 @@ services:
     networks:
       - friturier-net
 
+  lavalink:
+    image: ghcr.io/lavalink-devs/lavalink:3.7.13
+    container_name: friturier-lavalink
+    restart: unless-stopped
+    environment:
+      _JAVA_OPTIONS: ${LAVALINK_JAVA_OPTIONS:--Xmx1G}
+      SERVER_PORT: 2333
+      LAVALINK_SERVER_PASSWORD: "${LAVALINK_PASSWORD:?LAVALINK_PASSWORD must be set}"
+    expose:
+      - "2333"
+    volumes:
+      - lavalink-plugins:/opt/Lavalink/plugins
+    networks:
+      - friturier-net
+
   friturier-bot:
     image: ghcr.io/peyrlac/friturier-bot:latest
     container_name: friturier-bot
     restart: unless-stopped
     depends_on:
-      - friturier-api
+      friturier-api:
+        condition: service_started
+      lavalink:
+        condition: service_started
     environment:
       NODE_ENV: ${NODE_ENV:-production}
       DISCORD_TOKEN: ${DISCORD_TOKEN}
@@ -43,9 +61,9 @@ services:
       SPOTIFY_CLIENT_ID: ${SPOTIFY_CLIENT_ID}
       SPOTIFY_CLIENT_SECRET: ${SPOTIFY_CLIENT_SECRET}
       GIPHY_TOKEN: ${GIPHY_TOKEN}
-      LAVALINK_HOST: ${LAVALINK_HOST}
-      LAVALINK_PASSWORD: ${LAVALINK_PASSWORD}
-      LAVALINK_PORT: ${LAVALINK_PORT}
+      LAVALINK_HOST: ${LAVALINK_HOST:-lavalink}
+      LAVALINK_PASSWORD: "${LAVALINK_PASSWORD:?LAVALINK_PASSWORD must be set}"
+      LAVALINK_PORT: 2333
       LAVALINK_SECURE: ${LAVALINK_SECURE:-false}
       LAVALINK_ENABLED: ${LAVALINK_ENABLED:-true}
       OPENAI: ${OPENAI}
