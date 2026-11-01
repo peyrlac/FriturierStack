@@ -47,6 +47,8 @@ services:
       NODE_ENV: ${NODE_ENV:-production}
       DISCORD_TOKEN: ${DISCORD_TOKEN}
       MONGO_TOKEN: ${MONGO_TOKEN}
+      DISCORD_ID: ${DISCORD_ID}
+      UPLOAD_CHANNEL_ID: ${UPLOAD_CHANNEL_ID}
       MONGO_DNS_SERVERS: ${MONGO_DNS_SERVERS:-}
       STATS_API_BASE: ${STATS_API_BASE:-http://friturier-api:3001}
       STATS_API_URL: ${STATS_API_URL:-http://friturier-api:3001}
@@ -54,7 +56,6 @@ services:
 
       WEBHOOK_ID: ${WEBHOOK_ID}
       WEBHOOK_TOKEN: ${WEBHOOK_TOKEN}
-      DISCORD_ID: ${DISCORD_ID}
       DISCORD_STATUS: ${DISCORD_STATUS}
       RADIO: ${RADIO}
       TOPGG_TOKEN: ${TOPGG_TOKEN}
